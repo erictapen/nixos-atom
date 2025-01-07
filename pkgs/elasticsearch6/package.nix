@@ -82,10 +82,7 @@ stdenv.mkDerivation (
       sourceProvenance = with lib.sourceTypes; [ binaryBytecode ];
       license = if enableUnfree then licenses.elastic20 else licenses.asl20;
       platforms = platforms.unix;
-      maintainers = with maintainers; [
-        apeschar
-        basvandijk
-      ];
+      maintainers = with maintainers; [ ];
     };
   }
   // optionalAttrs enableUnfree {
