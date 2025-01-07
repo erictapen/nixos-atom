@@ -1,0 +1,88 @@
+diff --git a/lib/arInstall.class.php b/lib/arInstall.class.php
+index c8ead219a..64577ff2f 100644
+--- a/lib/arInstall.class.php
++++ b/lib/arInstall.class.php
+@@ -163,6 +163,10 @@ class arInstall
+             $dsn .= ';port='.$options['databasePort'];
+         }
+ 
++        if (isset($options['databaseUnixSocket'])) {
++            $dsn = 'mysql:unix_socket='.$options['databaseUnixSocket'].';dbname='.$options['databaseName'];
++        }
++
+         $config = [
+             'all' => [
+                 'propel' => [
+@@ -173,7 +177,6 @@ class arInstall
+                         'pooling' => true,
+                         'dsn' => $dsn,
+                         'username' => $options['databaseUsername'],
+-                        'password' => $options['databasePassword'],
+                     ],
+                 ],
+             ],
+diff --git a/lib/task/tools/installTask.class.php b/lib/task/tools/installTask.class.php
+index 65a64dbd2..777204bba 100644
+--- a/lib/task/tools/installTask.class.php
++++ b/lib/task/tools/installTask.class.php
+@@ -108,6 +108,12 @@ class installTask extends sfBaseTask
+                 sfCommandOption::PARAMETER_OPTIONAL,
+                 'Database password'
+             ),
++            new sfCommandOption(
++                'database-unix-socket',
++                null,
++                sfCommandOption::PARAMETER_OPTIONAL,
++                'Database Unix socket'
++            ),
+             new sfCommandOption(
+                 'search-host',
+                 null,
+@@ -323,6 +329,11 @@ EOF;
+                 $options,
+                 'Database password'
+             ),
++            'databaseUnixSocket' => $this->getOptionValue(
++                'database-unix-socket',
++                $options,
++                'Database Unix socket'
++            ),
+         ];
+ 
+         $this->logSection($this->name, 'Configure search');
+@@ -411,20 +422,21 @@ EOF;
+ 
+         $this->logSection($this->name, 'Confirm configuration');
+ 
+-        echo "Database host       {$databaseOptions['databaseHost']}\n";
+-        echo "Database port       {$databaseOptions['databasePort']}\n";
+-        echo "Database name       {$databaseOptions['databaseName']}\n";
+-        echo "Database user       {$databaseOptions['databaseUsername']}\n";
+-        echo "Database password   {$databaseOptions['databasePassword']}\n";
+-        echo "Search host         {$searchOptions['searchHost']}\n";
+-        echo "Search port         {$searchOptions['searchPort']}\n";
+-        echo "Search index        {$searchOptions['searchIndex']}\n";
+-        echo "Site title          {$siteOptions['siteTitle']}\n";
+-        echo "Site description    {$siteOptions['siteDescription']}\n";
+-        echo "Site base URL       {$siteOptions['siteBaseUrl']}\n";
+-        echo "Admin email         {$adminOptions['email']}\n";
+-        echo "Admin username      {$adminOptions['username']}\n";
+-        echo "Admin password      {$adminOptions['password']}\n";
++        echo "Database host        {$databaseOptions['databaseHost']}\n";
++        echo "Database port        {$databaseOptions['databasePort']}\n";
++        echo "Database name        {$databaseOptions['databaseName']}\n";
++        echo "Database user        {$databaseOptions['databaseUsername']}\n";
++        echo "Database password    {$databaseOptions['databasePassword']}\n";
++        echo "Database Unix socket {$databaseOptions['databaseUnixSocket']}\n";
++        echo "Search host          {$searchOptions['searchHost']}\n";
++        echo "Search port          {$searchOptions['searchPort']}\n";
++        echo "Search index         {$searchOptions['searchIndex']}\n";
++        echo "Site title           {$siteOptions['siteTitle']}\n";
++        echo "Site description     {$siteOptions['siteDescription']}\n";
++        echo "Site base URL        {$siteOptions['siteBaseUrl']}\n";
++        echo "Admin email          {$adminOptions['email']}\n";
++        echo "Admin username       {$adminOptions['username']}\n";
++        echo "Admin password       {$adminOptions['password']}\n";
+ 
+         if (
+             !$options['no-confirmation']
