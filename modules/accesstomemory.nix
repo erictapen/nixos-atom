@@ -183,6 +183,8 @@ in
             symfony \
             jobs:worker
         '';
+        ExecStop = "${pkgs.coreutils}/bin/kill -s TERM $MAINPID";
+        Restart = "on-failure";
       };
       unitConfig = {
         # High interval and low restart limit to increase the possibility
