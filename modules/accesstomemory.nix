@@ -113,10 +113,24 @@ in
         Group = "accesstomemory";
       };
       script = ''
-        # Delete everything and install again for now
-        rm -rf *
+        ### Delete everything except uploads/ and downloads/ and install again for now
+
+        # Enable globbing for hidden files
+        shopt -s dotglob
+
+        for item in *; do
+            base_item=$(basename "$item")
+
+            if [[ "$base_item" == "uploads" || "$base_item" == "downloads" ]]; then
+                continue
+            fi
+
+            rm -rf "$item"
+        done
+
         cp -r ${package}/share/php/accesstomemory/* .
         chmod u+w -R .
+
         php -d memory_limit=4G \
           symfony tools:install \
           --database-host=localhost \
@@ -135,7 +149,9 @@ in
           --site-description=${lib.escapeShellArg cfg.description} \
           --site-base-url='https://${cfg.domain}' \
           --no-confirmation
+
         sed -i 's|default: 127.0.0.1:4730|default: 127.0.0.1:${toString config.services.gearmand.port}|g' config/gearman.yml
+
         # CSP is off by default, it's good to have it activated
         sed -i 's|Content-Security-Policy-Report-Only|Content-Security-Policy|g' config/app.yml
       '';
