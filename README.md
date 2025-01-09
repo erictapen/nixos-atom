@@ -2,6 +2,9 @@
 
 This repository enables you to run [AtoM (Access to memory)](https://accesstomemory.org/en/) on your NixOS system.
 
+> [!WARNING]
+> The installation that results from this code looks okay at first glance, but is certainly not usable in production yet. If you plan to do this, come again later when this warning has disappeared.
+
 ## Future plans
 
 Eventually, all this functionality should be part of Nixpkgs/NixOS. Though for that to happen, AtoM needs to support more recent dependencies and NixOS needs the Gearman service to be packaged. The following roadmap will reflect the progress made along the way.
