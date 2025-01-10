@@ -113,6 +113,12 @@ in
         Group = "accesstomemory";
       };
       script = ''
+        # Installing seems to wipe the database, so make sure to only run it once
+        FIRST_INSTALL=0
+        if [ -d lib/ ]; then
+            FIRST_INSTALL=1
+        fi
+
         ### Delete everything except uploads/ and downloads/ and install again for now
 
         # Enable globbing for hidden files
@@ -131,29 +137,31 @@ in
         cp -r ${package}/share/php/accesstomemory/* .
         chmod u+w -R .
 
-        php -d memory_limit=4G \
-          symfony tools:install \
-          --database-host=localhost \
-          --database-port=9999 \
-          --database-name=accesstomemory \
-          --database-user=accesstomemory \
-          --database-password=passwordthatisnotactuallyused \
-          --database-unix-socket=/run/mysqld/mysqld.sock \
-          --admin-email='${cfg.admin.email}' \
-          --admin-username='${cfg.admin.username}' \
-          --admin-password="$(cat ${cfg.admin.passwordFile})" \
-          --search-host=localhost \
-          --search-port=${toString config.services.elasticsearch.port} \
-          --search-index=accesstomemory \
-          --site-title=${lib.escapeShellArg cfg.title} \
-          --site-description=${lib.escapeShellArg cfg.description} \
-          --site-base-url='https://${cfg.domain}' \
-          --no-confirmation
+        if [ $FIRST_INSTALL -eq 0 ]; then
+          php -d memory_limit=4G \
+            symfony tools:install \
+            --database-host=localhost \
+            --database-port=9999 \
+            --database-name=accesstomemory \
+            --database-user=accesstomemory \
+            --database-password=passwordthatisnotactuallyused \
+            --database-unix-socket=/run/mysqld/mysqld.sock \
+            --admin-email='${cfg.admin.email}' \
+            --admin-username='${cfg.admin.username}' \
+            --admin-password="$(cat ${cfg.admin.passwordFile})" \
+            --search-host=localhost \
+            --search-port=${toString config.services.elasticsearch.port} \
+            --search-index=accesstomemory \
+            --site-title=${lib.escapeShellArg cfg.title} \
+            --site-description=${lib.escapeShellArg cfg.description} \
+            --site-base-url='https://${cfg.domain}' \
+            --no-confirmation
 
-        sed -i 's|default: 127.0.0.1:4730|default: 127.0.0.1:${toString config.services.gearmand.port}|g' config/gearman.yml
+          sed -i 's|default: 127.0.0.1:4730|default: 127.0.0.1:${toString config.services.gearmand.port}|g' config/gearman.yml
 
-        # CSP is off by default, it's good to have it activated
-        sed -i 's|Content-Security-Policy-Report-Only|Content-Security-Policy|g' config/app.yml
+          # CSP is off by default, it's good to have it activated
+          sed -i 's|Content-Security-Policy-Report-Only|Content-Security-Policy|g' config/app.yml
+        fi
       '';
       restartTriggers = [ package ];
     };
