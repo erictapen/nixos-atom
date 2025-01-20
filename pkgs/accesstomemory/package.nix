@@ -33,8 +33,8 @@ let
       owner = "artefactual";
       repo = "atom";
       # dev/php-80-update
-      rev = "fc248cb849c9fa0287115a3fdf928e39c748688c";
-      hash = "sha256-BR8fxedVB4tOM+iwsTg0MedoOHXirGAoGBuhdJorjNs=";
+      rev = "3e987b979d5132070035e20d7bed4a9358ea179a";
+      hash = "sha256-7xizLmGcfUAABuW4IjK7rXfBDqZj93WsqpPX2uQDYhA=";
     };
     patches = [ ./unix-socket.patch ];
   };
