@@ -33,8 +33,8 @@ let
       owner = "artefactual";
       repo = "atom";
       # dev/php-80-update
-      rev = "9e7238e7b6c1ab86734af2fc55e5193a42bacfe7";
-      hash = "sha256-GPQy9/6mifT1BcTrr7SL2oWtdYfYiiVXE40hlbphiog=";
+      rev = "d34a5b6a227686b41e5551f1eddea3b45ce451de";
+      hash = "sha256-Gn4Wvv2Lw22m1VGBSqBRtY59eXx71U8XZXOAbKElGcY=";
     };
     patches = [ ./unix-socket.patch ];
   };
@@ -50,7 +50,7 @@ let
     pname = "accesstomemory-frontend";
     inherit version src meta;
 
-    npmDepsHash = "sha256-9BkNqE9CFaudzMAdpiEU3792/smy+gTeLKvVRpUA+VU=";
+    npmDepsHash = "sha256-mOn9SAl8egwd5FpCkWf6xgNDVPii4YcLovN/83fx9SY=";
 
     env.CYPRESS_INSTALL_BINARY = "0"; # disallow cypress from downloading binaries in sandbox
 
