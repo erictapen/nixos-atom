@@ -32,9 +32,9 @@ let
     src = fetchFromGitHub {
       owner = "artefactual";
       repo = "atom";
-      # dev/php-80-update
-      rev = "d34a5b6a227686b41e5551f1eddea3b45ce451de";
-      hash = "sha256-Gn4Wvv2Lw22m1VGBSqBRtY59eXx71U8XZXOAbKElGcY=";
+      # qa/2.x branch
+      rev = "69a949dfa96fcce7a8ef70657b4d893673094a6b";
+      hash = "sha256-4fEAeoAjivmhi+DDg18sD/6El6HDNwb0RlYGzNu2oCk=";
     };
     patches = [ ./unix-socket.patch ];
   };
