@@ -27,14 +27,13 @@ let
       ])
     );
   });
-  version = "2.8.2";
+  version = "2.9.0";
   src = applyPatches {
     src = fetchFromGitHub {
       owner = "artefactual";
       repo = "atom";
-      # qa/2.x branch
-      rev = "69a949dfa96fcce7a8ef70657b4d893673094a6b";
-      hash = "sha256-4fEAeoAjivmhi+DDg18sD/6El6HDNwb0RlYGzNu2oCk=";
+      tag = "v${version}";
+      hash = "sha256-WSEsVgiu/5bzHv5FJhhfpXKjD9TlmbTmvQE1XWBu2v0=";
     };
     patches = [ ./unix-socket.patch ];
   };
