@@ -18,8 +18,18 @@ in
       imports = modules;
 
       virtualisation.memorySize = 4096;
+
+      # We need development dependencies to run unit tests
+      nixpkgs.overlays = [
+        (final: prev: {
+          accesstomemory = prev.accesstomemory.overrideAttrs (_: {
+            composerNoDev = false;
+          });
+        })
+      ];
+
       services.accesstomemory = {
-        enable = true;
+        nable = true;
         domain = "${serverDomain}";
         title = "A very specific title";
         description = "An even more specific description";
@@ -73,8 +83,7 @@ in
     ''
       start_all()
       server.wait_for_unit("phpfpm-accesstomemory.service")
-      # TODO Unit tests currently fail, which might be due to the unstable branch we are on.
-      # server.succeed("sudo -u accesstomemory ${lib.getExe runUnitTests}")
+      server.succeed("sudo -u accesstomemory ${lib.getExe runUnitTests}")
       client.wait_for_unit("multi-user.target")
       client.succeed("curl --fail https://${serverDomain} | grep ${lib.escapeShellArg nodes.server.services.accesstomemory.title}")
       client.succeed("curl --fail https://${serverDomain} | grep ${lib.escapeShellArg nodes.server.services.accesstomemory.description}")

@@ -27,13 +27,13 @@ let
       ])
     );
   });
-  version = "2.9.0";
+  version = "2.9.1";
   src = applyPatches {
     src = fetchFromGitHub {
       owner = "artefactual";
       repo = "atom";
       tag = "v${version}";
-      hash = "sha256-WSEsVgiu/5bzHv5FJhhfpXKjD9TlmbTmvQE1XWBu2v0=";
+      hash = "sha256-MZxvaxPJS+pyI2ezv+J7SBF3wWLYfx1ETbvwTIlaDvo=";
     };
     patches = [ ./unix-socket.patch ];
   };
@@ -74,7 +74,12 @@ php.buildComposerProject (finalAttrs: {
 
   inherit php;
 
-  vendorHash = "sha256-B7mccuIPSLjxKMwHn93V1WtQmpFNpkVVxRvblhXWMFE=";
+  # Having require-dev dependencies is only necessary to run unit tests
+  vendorHash =
+    if finalAttrs.composerNoDev then
+      "sha256-/y1X1I+fxmtILoxOdmZvxLB9XK8Dg7KekLhVY3kfovY="
+    else
+      "sha256-WhPvcOL02u0G4jWKMZs4MhFRXFw5K9ryossPhRVbzss=";
 
   postInstall = ''
     cp -r ${frontend}/* $out/share/php/accesstomemory/
