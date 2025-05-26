@@ -29,7 +29,7 @@ in
       ];
 
       services.accesstomemory = {
-        nable = true;
+        enable = true;
         domain = "${serverDomain}";
         title = "A very specific title";
         description = "An even more specific description";
