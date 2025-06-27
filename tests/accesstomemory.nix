@@ -22,9 +22,9 @@ in
       # We need development dependencies to run unit tests
       nixpkgs.overlays = [
         (final: prev: {
-          accesstomemory = prev.accesstomemory.overrideAttrs (_: {
-            composerNoDev = true;
-          });
+          accesstomemory = prev.accesstomemory.override {
+            composerNoDev = false;
+          };
         })
       ];
 

@@ -10,8 +10,8 @@ This repository enables you to run [AtoM (Access to memory)](https://accesstomem
 Eventually, all this functionality should be part of Nixpkgs/NixOS. Though for that to happen, AtoM needs to support more recent dependencies and NixOS needs the Gearman service to be packaged. The following roadmap will reflect the progress made along the way.
 
 - [X] AtoM needs to support PHP >= 8.2 (done in [2.9.0](https://github.com/artefactual/atom/releases/tag/v2.9.0))
-- [ ] AtoM needs to support Elasticsearch 7
-- [ ] AtoM needs to support lessc 4
+- [X] AtoM needs to support Elasticsearch 7
+- [X] AtoM needs to stop using lessc 3
 - [ ] NixOS needs to have a package and module for [Gearman](http://gearman.org/)
 - [ ] NixOS needs to have a package and module for AtoM itself
 
@@ -51,11 +51,6 @@ Using the module definition from this flake to run AtoM on your system is a bit 
       email = "atom@example.org";
     };
   };
-
-  # I found this to be necessary when running elasticsearch6 on aarch64-linux
-  services.elasticsearch.extraConf = lib.optionalString pkgs.stdenv.hostPlatform.isAarch64 ''
-    xpack.ml.enabled: false
-  '';
 
 }
 ```

@@ -4,9 +4,9 @@
   applyPatches,
   buildNpmPackage,
   fetchNpmDeps,
-  lessc,
   php83,
   nixosTests,
+  composerNoDev ? true,
 }:
 
 let
@@ -24,16 +24,17 @@ let
         zip
         apcu
         imagick
+        memcache
       ])
     );
   });
-  version = "2.9.1";
+  version = "2.10.0";
   src = applyPatches {
     src = fetchFromGitHub {
       owner = "artefactual";
       repo = "atom";
       tag = "v${version}";
-      hash = "sha256-MZxvaxPJS+pyI2ezv+J7SBF3wWLYfx1ETbvwTIlaDvo=";
+      hash = "sha256-EoZXRZgIysQzH+MTC1sVt7ACxS4FqYmzH+4FO/Ta7No=";
     };
     patches = [ ./unix-socket.patch ];
   };
@@ -49,16 +50,9 @@ let
     pname = "accesstomemory-frontend";
     inherit version src meta;
 
-    npmDepsHash = "sha256-mOn9SAl8egwd5FpCkWf6xgNDVPii4YcLovN/83fx9SY=";
+    npmDepsHash = "sha256-WRHW+B6T1mXefDOQzpyaoilZ1W3h0nMSwKcQrg7jxb0=";
 
     env.CYPRESS_INSTALL_BINARY = "0"; # disallow cypress from downloading binaries in sandbox
-
-    nativeBuildInputs = [ lessc ];
-
-    postBuild = ''
-      make -C plugins/arDominionPlugin
-      make -C plugins/arArchivesCanadaPlugin
-    '';
 
     installPhase = ''
       mkdir -p $out
@@ -70,16 +64,32 @@ php.buildComposerProject (finalAttrs: {
   pname = "accesstomemory";
   inherit version src meta;
 
-  composerNoDev = true;
+  inherit composerNoDev;
 
   inherit php;
 
-  # Having require-dev dependencies is only necessary to run unit tests
-  vendorHash =
-    if finalAttrs.composerNoDev then
-      "sha256-/y1X1I+fxmtILoxOdmZvxLB9XK8Dg7KekLhVY3kfovY="
-    else
-      "sha256-WhPvcOL02u0G4jWKMZs4MhFRXFw5K9ryossPhRVbzss=";
+  composerRepository = php.mkComposerRepository {
+    inherit (finalAttrs)
+      patches
+      pname
+      src
+      version
+      ;
+    composer = php.packages.composer-local-repo-plugin;
+
+    # Having require-dev dependencies is only necessary to run unit tests
+    vendorHash =
+      if finalAttrs.composerNoDev then
+        "sha256-yG732HZy+0okcEET88KiWMSswjnF0Zg1FGGqzQL2zFA="
+      else
+        "sha256-pnIwei141zY2SnK2fzoNVeL8FGHxDeHyy6e24buaq8g=";
+
+    composerLock = finalAttrs.composerLock or null;
+    inherit composerNoDev;
+    composerNoPlugins = finalAttrs.composerNoPlugins or true;
+    composerNoScripts = finalAttrs.composerNoScripts or true;
+    composerStrictValidation = finalAttrs.composerStrictValidation or true;
+  };
 
   postInstall = ''
     cp -r ${frontend}/* $out/share/php/accesstomemory/

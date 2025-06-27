@@ -29,13 +29,12 @@
       overlays.default = final: prev: {
         accesstomemory = prev.callPackage ./pkgs/accesstomemory/package.nix { };
         gearmand = prev.callPackage ./pkgs/gearmand/package.nix { };
-        elasticsearch6 = prev.callPackage ./pkgs/elasticsearch6/package.nix {
-          elk6Version = "6.8.23";
-          util-linux = prev.util-linuxMinimal;
-          jre_headless = prev.jre8_headless;
+        elasticsearch711 = prev.callPackage ./pkgs/elasticsearch7/package.nix {
+          elk7Version = "7.11.1";
+          # util-linux = prev.util-linuxMinimal;
+          # jre_headless = prev.jre8_headless;
           # enableUnfree = false;
         };
-        lessc = (prev.callPackage ./pkgs/lessc3 { })."less-3.13.1";
       };
 
       packages = forAllSystems (
@@ -46,9 +45,9 @@
         {
           default = pkgs.accesstomemory;
           atom = self.packages.${system}.default;
+          atom-dev = pkgs.callPackage ./pkgs/accesstomemory/package.nix { composerNoDev = false; };
           gearmand = pkgs.gearmand;
-          elasticsearch6 = pkgs.elasticsearch6;
-          lessc = pkgs.lessc;
+          elasticsearch711 = pkgs.elasticsearch711;
         }
       );
 

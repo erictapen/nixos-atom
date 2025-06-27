@@ -83,7 +83,7 @@ in
     };
 
     services.elasticsearch.enable = true;
-    services.elasticsearch.package = pkgs.elasticsearch6;
+    services.elasticsearch.package = pkgs.elasticsearch711;
 
     services.gearmand.enable = true;
 
