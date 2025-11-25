@@ -20,7 +20,7 @@ let
     imagemagick
     ghostscript
     ffmpeg
-    poppler_utils
+    poppler-utils
   ];
 in
 {
