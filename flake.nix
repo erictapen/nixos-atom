@@ -72,7 +72,7 @@
               certs = import "${nixpkgs}/nixos/tests/common/acme/server/snakeoil-certs.nix";
               test = import ./tests/accesstomemory.nix { inherit pkgs modules certs; };
             in
-            pkgs.nixosTest test;
+            pkgs.testers.nixosTest test;
         }
       );
 

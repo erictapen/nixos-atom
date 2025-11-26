@@ -46,15 +46,14 @@ stdenv.mkDerivation (
     '';
 
     nativeBuildInputs = [ makeWrapper ];
-    buildInputs =
-      [
-        jre_headless
-        util-linux
-      ]
-      ++ optionals enableUnfree [
-        zlib
-        libxcrypt-legacy
-      ];
+    buildInputs = [
+      jre_headless
+      util-linux
+    ]
+    ++ optionals enableUnfree [
+      zlib
+      libxcrypt-legacy
+    ];
 
     installPhase = ''
       mkdir -p $out
