@@ -31,8 +31,8 @@
         gearmand = prev.callPackage ./pkgs/gearmand/package.nix { };
         elasticsearch711 = prev.callPackage ./pkgs/elasticsearch7/package.nix {
           elk7Version = "7.11.1";
-          # util-linux = prev.util-linuxMinimal;
-          # jre_headless = prev.jre8_headless;
+          util-linux = prev.util-linuxMinimal;
+          jre_headless = prev.jdk11_headless;
           # enableUnfree = false;
         };
       };

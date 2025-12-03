@@ -84,6 +84,11 @@ in
 
     services.elasticsearch.enable = true;
     services.elasticsearch.package = pkgs.elasticsearch711;
+    # For some reason elasticsearch protests about missing system libraries
+    # when machine learning support is enabled, but we don't seem to need it for atom
+    services.elasticsearch.extraConf = ''
+      xpack.ml.enabled: false
+    '';
 
     services.gearmand.enable = true;
 
