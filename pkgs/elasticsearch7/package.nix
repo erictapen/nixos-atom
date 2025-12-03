@@ -1,15 +1,16 @@
-{ elk7Version
-, enableUnfree ? true
-, lib
-, stdenv
-, fetchurl
-, makeWrapper
-, jre_headless
-, util-linux
-, gnugrep
-, coreutils
-, autoPatchelfHook
-, zlib
+{
+  elk7Version,
+  enableUnfree ? true,
+  lib,
+  stdenv,
+  fetchurl,
+  makeWrapper,
+  jre_headless,
+  util-linux,
+  gnugrep,
+  coreutils,
+  autoPatchelfHook,
+  zlib,
 }:
 
 with lib;
@@ -17,11 +18,10 @@ let
   info = splitString "-" stdenv.hostPlatform.system;
   arch = elemAt info 0;
   plat = elemAt info 1;
-  shas =
-    {
-      x86_64-linux = "sha256-INx8y6iZ27bXh6Qti6NFJqxiEI1g+0viPoaesUwxp9E=";
-      x86_64-darwin = "sha256-OhMVOdXei9D9cH+O5tBhdKvZ05TsImjMqUUsucRyWMo=";
-    };
+  shas = {
+    x86_64-linux = "sha256-INx8y6iZ27bXh6Qti6NFJqxiEI1g+0viPoaesUwxp9E=";
+    x86_64-darwin = "sha256-OhMVOdXei9D9cH+O5tBhdKvZ05TsImjMqUUsucRyWMo=";
+  };
 in
 stdenv.mkDerivation (rec {
   version = elk7Version;
@@ -45,7 +45,10 @@ stdenv.mkDerivation (rec {
   '';
 
   nativeBuildInputs = [ makeWrapper ];
-  buildInputs = [ jre_headless util-linux ];
+  buildInputs = [
+    jre_headless
+    util-linux
+  ];
 
   installPhase = ''
     mkdir -p $out
@@ -57,7 +60,13 @@ stdenv.mkDerivation (rec {
       --replace 'bin/elasticsearch-keystore' "$out/bin/elasticsearch-keystore"
 
     wrapProgram $out/bin/elasticsearch \
-      --prefix PATH : "${makeBinPath [ util-linux coreutils gnugrep ]}" \
+      --prefix PATH : "${
+        makeBinPath [
+          util-linux
+          coreutils
+          gnugrep
+        ]
+      }" \
       --set JAVA_HOME "${jre_headless}"
 
     wrapProgram $out/bin/elasticsearch-plugin --set JAVA_HOME "${jre_headless}"
@@ -67,7 +76,9 @@ stdenv.mkDerivation (rec {
     description = "Open Source, Distributed, RESTful Search Engine";
     license = licenses.asl20;
     platforms = platforms.unix;
-    maintainers = with maintainers; [ apeschar basvandijk ];
+    maintainers = with maintainers; [
+      apeschar
+      basvandijk
+    ];
   };
 })
-
