@@ -20,6 +20,7 @@ let
   plat = elemAt info 1;
   shas = {
     x86_64-linux = "sha256-INx8y6iZ27bXh6Qti6NFJqxiEI1g+0viPoaesUwxp9E=";
+    aarch64-linux = "sha256-no9q3OYhhXqOZa1PWy2sLc2Wiphc8jCmBMmd0NOBl2g=";
     x86_64-darwin = "sha256-OhMVOdXei9D9cH+O5tBhdKvZ05TsImjMqUUsucRyWMo=";
   };
 in
