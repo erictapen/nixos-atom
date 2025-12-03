@@ -28,13 +28,13 @@ let
       ])
     );
   });
-  version = "2.10.0";
+  version = "2.10.1";
   src = applyPatches {
     src = fetchFromGitHub {
       owner = "artefactual";
       repo = "atom";
       tag = "v${version}";
-      hash = "sha256-EoZXRZgIysQzH+MTC1sVt7ACxS4FqYmzH+4FO/Ta7No=";
+      hash = "sha256-M4k0BeYiQpNtOurldGHJMpAMJIBkpBSxUQDUtQEJUE4=";
     };
     patches = [ ./unix-socket.patch ];
   };
@@ -50,7 +50,7 @@ let
     pname = "accesstomemory-frontend";
     inherit version src meta;
 
-    npmDepsHash = "sha256-WRHW+B6T1mXefDOQzpyaoilZ1W3h0nMSwKcQrg7jxb0=";
+    npmDepsHash = "sha256-SJnEFRVEib732um/2+3FT8DFhr+RQKtGOszPSqLJoK0=";
 
     env.CYPRESS_INSTALL_BINARY = "0"; # disallow cypress from downloading binaries in sandbox
 
