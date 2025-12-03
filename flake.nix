@@ -3,10 +3,16 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
-    { self, nixpkgs }:
+    {
+      self,
+      nixpkgs,
+      treefmt-nix,
+    }:
     let
       forAllSystems =
         f:
@@ -87,7 +93,12 @@
         }
       );
 
-      formatter = forAllSystems (system: nixpkgsFor.${system}.nixfmt-rfc-style);
+      formatter = forAllSystems (
+        system:
+        treefmt-nix.lib.mkWrapper nixpkgsFor.${system} {
+          programs.nixfmt.enable = true;
+        }
+      );
 
     };
 }
