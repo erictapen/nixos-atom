@@ -83,7 +83,7 @@ in
     ''
       start_all()
       server.wait_for_unit("phpfpm-accesstomemory.service")
-      # server.succeed("sudo -u accesstomemory ${lib.getExe runUnitTests}")
+      server.succeed("sudo -u accesstomemory ${lib.getExe runUnitTests}")
       client.wait_for_unit("multi-user.target")
       client.succeed("curl --fail https://${serverDomain} | grep ${lib.escapeShellArg nodes.server.services.accesstomemory.title}")
       client.succeed("curl --fail https://${serverDomain} | grep ${lib.escapeShellArg nodes.server.services.accesstomemory.description}")
