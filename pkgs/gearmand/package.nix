@@ -16,11 +16,11 @@
 
 stdenv.mkDerivation rec {
   pname = "gearmand";
-  version = "1.1.21";
+  version = "1.1.22";
 
   src = fetchzip {
     url = "https://github.com/gearman/gearmand/releases/download/${version}/gearmand-${version}.tar.gz";
-    hash = "sha256-ClzhEhx69bwblJ+jL0rsBprZIKm9XCnGg//3AYr5lIc=";
+    hash = "sha256-809kG+3Tg7LSK8trtXF+JQmkdEFYrtWepJ5/yqNYXO4=";
   };
 
   configureFlags = [ "--with-boost-libdir=${boost.out}/lib" ];
