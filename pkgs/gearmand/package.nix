@@ -7,7 +7,7 @@
   boost,
   libevent,
   libuuid,
-  wolfssl,
+  openssl,
   libmemcached,
   postgresql,
   sqlite,
@@ -34,7 +34,7 @@ stdenv.mkDerivation rec {
     boost
     libevent
     libuuid
-    wolfssl
+    openssl
     libmemcached
     postgresql
     sqlite
